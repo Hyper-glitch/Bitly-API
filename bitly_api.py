@@ -30,15 +30,15 @@ class BitlyApi:
         response.raise_for_status()
         return response.json().get('link')
 
-    def get_clicks_count(self, bitlink):
+    def get_total_clicks(self, bitlink):
         bitlink_without_scheme = BitlyApi.parse_bitlink(bitlink)
 
         endpoint = f'bitlinks/{bitlink_without_scheme}/clicks/summary'
         url = urllib.urljoin(self.base_url, endpoint)
         response = self.session.get(url=url)
         response.raise_for_status()
-        clicks_count = response.json().get('total_clicks')
-        return clicks_count
+        total_clicks = response.json().get('total_clicks')
+        return total_clicks
 
     @staticmethod
     def validate_url(long_url):
@@ -59,6 +59,6 @@ if __name__ == '__main__':
     user = bitly_instance.get_user()
     BitlyApi.validate_url(long_url=long_url)
     bitlink = bitly_instance.create_bitlink(long_url=long_url)
-    clicks_count = bitly_instance.get_clicks_count(bitlink=bitlink)
+    clicks_count = bitly_instance.get_total_clicks(bitlink=bitlink)
 
     print(f'Битлинк {bitlink}\n', f'Количество кликов: {clicks_count}')
