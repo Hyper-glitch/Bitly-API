@@ -31,7 +31,7 @@ class BitlyApi:
         return response.json().get('link')
 
     def get_total_clicks(self, bitlink):
-        bitlink_without_scheme = BitlyApi.parse_bitlink(bitlink)
+        bitlink_without_scheme = parse_bitlink(bitlink)
 
         endpoint = f'bitlinks/{bitlink_without_scheme}/clicks/summary'
         url = urllib.urljoin(self.base_url, endpoint)
@@ -40,25 +40,38 @@ class BitlyApi:
         total_clicks = response.json().get('total_clicks')
         return total_clicks
 
-    @staticmethod
-    def validate_url(long_url):
-        response = requests.get(url=long_url)
-        response.raise_for_status()
 
-    @staticmethod
-    def parse_bitlink(bitlink):
-        parsed_bitlink = urllib.urlparse(bitlink)
-        bitlink_without_scheme = parsed_bitlink.netloc + parsed_bitlink.path
-        return bitlink_without_scheme
+def validate_response(long_url):
+    response = requests.get(url=long_url)
+    response.raise_for_status()
+
+
+def parse_bitlink(bitlink):
+    parsed_bitlink = urllib.urlparse(bitlink)
+    bitlink_without_scheme = parsed_bitlink.netloc + parsed_bitlink.path
+    return bitlink_without_scheme
+
+
+def is_bitlink(long_url):
+    bitly_hostname = 'bit.ly'
+    parsed_url = urllib.urlparse(long_url)
+    if parsed_url.hostname == bitly_hostname:
+        return True
+    return False
 
 
 if __name__ == '__main__':
-    long_url = str(input())
-
     bitly_instance = BitlyApi(token=GENERIC_ACCESS_TOKEN)
     user = bitly_instance.get_user()
-    BitlyApi.validate_url(long_url=long_url)
-    bitlink = bitly_instance.create_bitlink(long_url=long_url)
-    clicks_count = bitly_instance.get_total_clicks(bitlink=bitlink)
 
-    print(f'Битлинк {bitlink}\n', f'Количество кликов: {clicks_count}')
+    long_url = str(input('Введите ссылку: '))
+    validate_response(long_url)
+    is_bitlink = is_bitlink(long_url)
+
+    if is_bitlink:
+        bitlink = long_url
+        total_clicks = bitly_instance.get_total_clicks(bitlink)
+        print(f'По ссылке прошли: {total_clicks} раз(а)')
+    else:
+        bitlink = bitly_instance.create_bitlink(long_url)
+        print(f'Битлинк: {bitlink}')
