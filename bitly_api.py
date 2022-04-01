@@ -60,14 +60,7 @@ def is_bitlink(long_url):
     return False
 
 
-if __name__ == '__main__':
-    bitly_instance = BitlyApi(token=GENERIC_ACCESS_TOKEN)
-    user = bitly_instance.get_user()
-
-    long_url = str(input('Введите ссылку: '))
-    validate_response(long_url)
-    is_bitlink = is_bitlink(long_url)
-
+def main(is_bitlink):
     if is_bitlink:
         bitlink = long_url
         total_clicks = bitly_instance.get_total_clicks(bitlink)
@@ -75,3 +68,13 @@ if __name__ == '__main__':
     else:
         bitlink = bitly_instance.create_bitlink(long_url)
         print(f'Битлинк: {bitlink}')
+
+
+if __name__ == '__main__':
+    bitly_instance = BitlyApi(token=GENERIC_ACCESS_TOKEN)
+    user = bitly_instance.get_user()
+
+    long_url = str(input('Введите ссылку: '))
+    validate_response(long_url)
+    is_bitlink = is_bitlink(long_url)
+    main(is_bitlink)
