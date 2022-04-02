@@ -2,7 +2,7 @@
 
 ## Basic information
 
-***Bitly API*** allows you to interact with **bitly.com** and create new bitlinks or count clicks by the old one.
+***Bitly API*** allows you to interact with **bitly.com** and create new bitlinks or count old bitlinks.
 
 ## Starting
 
