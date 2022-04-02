@@ -6,11 +6,13 @@ import requests
 
 
 GENERIC_ACCESS_TOKEN = os.environ.get('GENERIC_ACCESS_TOKEN')
+BITLY_HOSTNAME = 'bit.ly'
+BASE_API_URL = 'https://api-ssl.bitly.com/v4/'
 
 
 class BitlyApi:
     def __init__(self, token):
-        self.base_url = 'https://api-ssl.bitly.com/v4/'
+        self.base_url = BASE_API_URL
         self.OAuth_2 = {'Authorization': f'Bearer {token}'}
         self.session = requests.Session()
         self.session.headers.update(self.OAuth_2)
@@ -52,15 +54,15 @@ def parse_bitlink(bitlink):
     return bitlink_without_scheme
 
 
-def is_bitlink(long_url):
-    bitly_hostname = 'bit.ly'
+def is_url_bitlink(long_url):
     parsed_url = urllib.urlparse(long_url)
-    if parsed_url.hostname == bitly_hostname:
+    if parsed_url.hostname == BITLY_HOSTNAME:
         return True
     return False
 
 
-def main(is_bitlink):
+def main(long_url):
+    is_bitlink = is_url_bitlink(long_url)
     if is_bitlink:
         bitlink = long_url
         total_clicks = bitly_instance.get_total_clicks(bitlink)
@@ -76,5 +78,4 @@ if __name__ == '__main__':
 
     long_url = str(input('Введите ссылку: '))
     validate_response(long_url)
-    is_bitlink = is_bitlink(long_url)
-    main(is_bitlink)
+    main(long_url)
