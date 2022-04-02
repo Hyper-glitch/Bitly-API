@@ -12,7 +12,7 @@ You need to create **.env** file and set the <ins>following environmental variab
 |-----------------------|-------------------------------------------------------|
 | `GENERIC_ACCESS_TOKEN`| personal access token for authorization to Bitly API  |
 
-This script runs a docker container with an application:
+This script builds and then runs a docker container with an application:
 ```bash
 docker build -t bitly_app .
 docker run -d --env-file .env bitly_app
