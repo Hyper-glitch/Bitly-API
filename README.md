@@ -6,9 +6,14 @@
 
 ## Running
 
-The easiest way to run this bot is to use official ***Docker image***.  
-You only need to create **.env** file and set the <ins>following environmental variables</ins> *(as in the .env(example) file)*:  
+You need to create **.env** file and set the <ins>following environmental variables</ins> *(for example see in .env file)*:
 
 | Environmental         | Description                                           |
 |-----------------------|-------------------------------------------------------|
-| `GENERIC_ACCESS_TOKEN`| personal student token from *dvmn.org* to use its API |
+| `GENERIC_ACCESS_TOKEN`| personal access token for authorization to Bitly API  |
+
+Run this script in a docker container with the following command:
+```bash
+docker build -t bitly_app .
+docker run -d --env-file .env bitly_app
+```
