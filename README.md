@@ -21,7 +21,7 @@ docker run -d --env-file .env bitly_app
 
 1. clone the repository:
 ```bash
-git clone https://github.com/Hyper-glitch/bitly_api.git
+git clone https://github.com/Hyper-glitch/Bitly-API.git
 ```
 2. Create **.env** file and set the <ins>environmental variables</ins> as described above.
 3. Install dependencies:
