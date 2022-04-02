@@ -17,14 +17,14 @@ class BitlyApi:
         self.session = requests.Session()
         self.session.headers.update(self.OAuth_2)
 
-    def get_user(self):
+    def get_user(self) -> dict:
         endpoint = 'user'
         url = urllib.urljoin(self.base_url, endpoint)
         response = self.session.get(url=url)
         response.raise_for_status()
         return response.json()
 
-    def create_bitlink(self, long_url):
+    def create_bitlink(self, long_url) -> str:
         endpoint = 'bitlinks'
         body = json.dumps({'long_url': long_url})
         url = urllib.urljoin(self.base_url, endpoint)
@@ -32,7 +32,7 @@ class BitlyApi:
         response.raise_for_status()
         return response.json().get('link')
 
-    def get_total_clicks(self, bitlink):
+    def get_total_clicks(self, bitlink) -> int:
         bitlink_without_scheme = parse_bitlink(bitlink)
 
         endpoint = f'bitlinks/{bitlink_without_scheme}/clicks/summary'
@@ -48,13 +48,13 @@ def validate_response(long_url):
     response.raise_for_status()
 
 
-def parse_bitlink(bitlink):
+def parse_bitlink(bitlink) -> str:
     parsed_bitlink = urllib.urlparse(bitlink)
     bitlink_without_scheme = parsed_bitlink.netloc + parsed_bitlink.path
     return bitlink_without_scheme
 
 
-def is_url_bitlink(long_url):
+def is_url_bitlink(long_url) -> bool:
     parsed_url = urllib.urlparse(long_url)
     if parsed_url.hostname == BITLY_HOSTNAME:
         return True
