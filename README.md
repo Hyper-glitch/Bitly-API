@@ -6,8 +6,6 @@
 
 ## Starting
 
-You need to create **.env** file and set the <ins>following environmental variables</ins> *(for example see in .env file)*:
-
 | Environmental         | Description                                           |
 |-----------------------|-------------------------------------------------------|
 | `GENERIC_ACCESS_TOKEN`| personal access token for authorization to Bitly API  |
