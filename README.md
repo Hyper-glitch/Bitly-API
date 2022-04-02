@@ -17,7 +17,7 @@ This script builds and then runs a docker container with an application:
 docker build -t bitly_app .
 docker run -d --env-file .env bitly_app
 ```
-#### *Classical starting*
+## *Classical starting*
 
 1. clone the repository:
 ```bash
