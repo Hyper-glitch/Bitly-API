@@ -8,6 +8,8 @@ import requests
 GENERIC_ACCESS_TOKEN = os.environ.get('GENERIC_ACCESS_TOKEN')
 BITLY_HOSTNAME = 'bit.ly'
 BASE_API_URL = 'https://api-ssl.bitly.com/v4/'
+NOT_FOUND_STATUS_CODE = 404
+FORBIDDEN_STATUS_CODE = 403
 
 
 class BitlyApi:
@@ -58,11 +60,11 @@ class BitlyApi:
         response = self.session.get(url=url)
         status_code = response.status_code
 
-        if status_code == 404:
+        if status_code == NOT_FOUND_STATUS_CODE:
             return False
         elif response.ok:
             return True
-        elif status_code == 403:
+        elif status_code == FORBIDDEN_STATUS_CODE:
             raise requests.RequestException.response
 
 
@@ -84,10 +86,8 @@ def main(long_url):
     bitly_instance = BitlyApi(token=GENERIC_ACCESS_TOKEN)
     bitly_instance.check_users_token()
 
-    is_bitlink = bitly_instance.is_url_bitlink(long_url)
-    if is_bitlink:
-        bitlink = long_url
-        total_clicks = bitly_instance.get_total_clicks(bitlink)
+    if bitly_instance.is_url_bitlink(long_url):
+        total_clicks = bitly_instance.get_total_clicks(bitlink=long_url)
         print(f'По ссылке прошли: {total_clicks} раз(а)')
     else:
         bitlink = bitly_instance.create_bitlink(long_url)
