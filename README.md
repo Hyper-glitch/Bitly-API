@@ -20,4 +20,4 @@ git clone https://github.com/Hyper-glitch/Bitly-API.git
 pip install -r requirements.txt
 ```
 4. Running example
-[![asciicast](https://asciinema.org/a/tYWC00jO5IvqilaZSJjZfqVlx.svg)](https://asciinema.org/a/tYWC00jO5IvqilaZSJjZfqVlx)
+<script id="asciicast-tYWC00jO5IvqilaZSJjZfqVlx" src="https://asciinema.org/a/tYWC00jO5IvqilaZSJjZfqVlx.js" async></script>
