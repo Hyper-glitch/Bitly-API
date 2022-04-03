@@ -22,8 +22,8 @@ class BitlyApi:
         self.session = requests.Session()
         self.session.headers.update(self.OAuth_2)
 
-    def get_user(self) -> dict:
-        """Send request to API's 'user' endpoint and return user info in dict data structure."""
+    def check_users_token(self) -> dict:
+        """Send request to API's 'user' endpoint and return user's info in dict data structure."""
         endpoint = 'user'
         url = urllib.urljoin(self.base_url, endpoint)
         response = self.session.get(url=url)
@@ -82,7 +82,7 @@ def parse_long_url(long_url) -> str:
 def main(long_url):
     """Start the main logic of the program."""
     bitly_instance = BitlyApi(token=GENERIC_ACCESS_TOKEN)
-    bitly_instance.get_user()
+    bitly_instance.check_users_token()
 
     is_bitlink = bitly_instance.is_url_bitlink(long_url)
     if is_bitlink:
