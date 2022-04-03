@@ -41,7 +41,7 @@ class BitlyApi:
 
     def get_total_clicks(self, bitlink) -> int:
         """Send request to API's to get total clicks on bitlink return total clicks count."""
-        bitlink_without_scheme = parse_bitlink(bitlink)
+        bitlink_without_scheme = parse_long_url(bitlink)
 
         endpoint = f'bitlinks/{bitlink_without_scheme}/clicks/summary'
         url = urllib.urljoin(self.base_url, endpoint)
@@ -50,6 +50,21 @@ class BitlyApi:
         total_clicks = response.json().get('total_clicks')
         return total_clicks
 
+    def is_url_bitlink(self, long_url) -> bool:
+        """Check if the url is a bitlink."""
+        parsed_url = parse_long_url(long_url)
+        endpoint = f'bitlinks/{parsed_url}'
+        url = urllib.urljoin(self.base_url, endpoint)
+        response = self.session.get(url=url)
+        status_code = response.status_code
+
+        if status_code == 404:
+            return False
+        elif response.ok:
+            return True
+        elif status_code == 403:
+            raise requests.RequestException.response
+
 
 def validate_response(long_url):
     """Send get request and check response status, if it's OK , url validate, else raise exception."""
@@ -57,19 +72,11 @@ def validate_response(long_url):
     response.raise_for_status()
 
 
-def parse_bitlink(bitlink) -> str:
+def parse_long_url(long_url) -> str:
     """Parse and return bitlink without a scheme."""
-    parsed_bitlink = urllib.urlparse(bitlink)
-    bitlink_without_scheme = parsed_bitlink.netloc + parsed_bitlink.path
-    return bitlink_without_scheme
-
-
-def is_url_bitlink(long_url) -> bool:
-    """Check if the url is a bitlink."""
     parsed_url = urllib.urlparse(long_url)
-    if parsed_url.hostname == BITLY_HOSTNAME:
-        return True
-    return False
+    url_without_scheme = parsed_url.netloc + parsed_url.path
+    return url_without_scheme
 
 
 def main(long_url):
@@ -77,7 +84,7 @@ def main(long_url):
     bitly_instance = BitlyApi(token=GENERIC_ACCESS_TOKEN)
     bitly_instance.get_user()
 
-    is_bitlink = is_url_bitlink(long_url)
+    is_bitlink = bitly_instance.is_url_bitlink(long_url)
     if is_bitlink:
         bitlink = long_url
         total_clicks = bitly_instance.get_total_clicks(bitlink)
