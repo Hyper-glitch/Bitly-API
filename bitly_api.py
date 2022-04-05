@@ -3,9 +3,9 @@ import os
 import urllib.parse as urllib
 
 import requests
+from dotenv import load_dotenv
 
 
-GENERIC_ACCESS_TOKEN = os.environ.get('GENERIC_ACCESS_TOKEN')
 BITLY_HOSTNAME = 'bit.ly'
 BASE_API_URL = 'https://api-ssl.bitly.com/v4/'
 FORBIDDEN_STATUS_CODE = 403
@@ -77,9 +77,9 @@ def parse_long_url(long_url) -> str:
     return url_without_scheme
 
 
-def main(long_url):
+def main(long_url, token):
     """Start the main logic of the program."""
-    bitly_instance = BitlyApi(token=GENERIC_ACCESS_TOKEN)
+    bitly_instance = BitlyApi(token=token)
     bitly_instance.check_users_token()
 
     if bitly_instance.is_url_bitlink(long_url):
@@ -93,4 +93,8 @@ def main(long_url):
 if __name__ == '__main__':
     long_url = input('Введите ссылку: ')
     validate_response(long_url)
-    main(long_url)
+
+    load_dotenv()
+    token = os.getenv('GENERIC_ACCESS_TOKEN')
+
+    main(long_url=long_url, token=token)
