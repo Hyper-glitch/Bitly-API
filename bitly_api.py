@@ -1,10 +1,10 @@
+import argparse
 import json
 import os
 import urllib.parse as urllib
 
 import requests
 from dotenv import load_dotenv
-
 
 BITLY_HOSTNAME = 'bit.ly'
 BASE_API_URL = 'https://api-ssl.bitly.com/v4/'
@@ -77,6 +77,12 @@ def parse_long_url(long_url) -> str:
     return url_without_scheme
 
 
+def create_arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('long_url', help='an url for create a new bitlink or count its clicks', type=str)
+    return parser.parse_args()
+
+
 def main(long_url, token):
     """Start the main logic of the program."""
     bitly_instance = BitlyApi(token=token)
@@ -91,7 +97,9 @@ def main(long_url, token):
 
 
 if __name__ == '__main__':
-    long_url = input('Введите ссылку: ')
+    args = create_arg_parser()
+
+    long_url = args.long_url
     validate_response(long_url)
 
     load_dotenv()
