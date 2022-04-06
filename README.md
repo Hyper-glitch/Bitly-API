@@ -19,5 +19,5 @@ git clone https://github.com/Hyper-glitch/Bitly-API.git
 ```bash
 pip install -r requirements.txt
 ```
-4. Running code
-<a href="https://asciinema.org/a/tYWC00jO5IvqilaZSJjZfqVlx" target="_blank"><img src="https://asciinema.org/a/tYWC00jO5IvqilaZSJjZfqVlx.svg" /></a>
+4. How to run code
+<a href="https://asciinema.org/a/qWrmPu6ZjNeRp2wG7a9gs20VY" target="_blank"><img src="https://asciinema.org/a/qWrmPu6ZjNeRp2wG7a9gs20VY.svg" /></a>
